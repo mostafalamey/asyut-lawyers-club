@@ -1,0 +1,1591 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Asyut Lawyers Club & Resort Management System - Client Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: oklch(20% 0.025 165);
+      --muted: oklch(45% 0.035 165);
+      --paper: oklch(97% 0.012 92);
+      --surface: oklch(99% 0.006 92);
+      --line: oklch(84% 0.018 92);
+      --green: oklch(36% 0.095 164);
+      --green-soft: oklch(90% 0.052 164);
+      --burgundy: oklch(35% 0.095 18);
+      --gold: oklch(74% 0.125 84);
+      --blue: oklch(46% 0.075 235);
+      --shadow: 0 24px 80px oklch(20% 0.025 165 / 0.16);
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 32px;
+      --space-2xl: 48px;
+      --space-3xl: 64px;
+      font-family: "Segoe UI", "Aptos", Tahoma, sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      --ease-expo:    cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-quart:   cubic-bezier(0.25, 1, 0.5, 1);
+      --ease-in-expo: cubic-bezier(0.7,  0, 0.84, 0);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 8% 12%, oklch(90% 0.052 164 / 0.56), transparent 30%),
+        radial-gradient(circle at 88% 82%, oklch(89% 0.05 84 / 0.42), transparent 34%),
+        linear-gradient(135deg, var(--paper), oklch(93% 0.018 102));
+    }
+
+    .deck {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: none;
+      padding: clamp(32px, 5vw, 72px);
+      overflow: hidden;
+    }
+
+    /* ─── Slide shell transitions ──────────────────────────────────────── */
+    .slide.active {
+      display: grid;
+      animation: slideIn 560ms var(--ease-expo) both;
+    }
+
+    /* Direction-aware entrances */
+    .slide[data-dir="next"].active { animation: slideFromRight 560ms var(--ease-expo) both; }
+    .slide[data-dir="prev"].active { animation: slideFromLeft  560ms var(--ease-expo) both; }
+
+    /* Leaving state keeps the slide visible during exit */
+    .slide.leaving {
+      display: grid;
+      pointer-events: none;
+    }
+    .slide[data-dir="next"].leaving { animation: slideOutLeft  340ms var(--ease-in-expo) forwards; }
+    .slide[data-dir="prev"].leaving { animation: slideOutRight 340ms var(--ease-in-expo) forwards; }
+
+    @keyframes slideIn       { from { opacity:0; transform:translateY(16px) scale(.992); } to { opacity:1; transform:none; } }
+    @keyframes slideFromRight { from { opacity:0; transform:translateX(64px) scale(.984); } to { opacity:1; transform:none; } }
+    @keyframes slideFromLeft  { from { opacity:0; transform:translateX(-64px) scale(.984); } to { opacity:1; transform:none; } }
+    @keyframes slideOutLeft   { from { opacity:1; transform:none; } to { opacity:0; transform:translateX(-56px); } }
+    @keyframes slideOutRight  { from { opacity:1; transform:none; } to { opacity:0; transform:translateX(56px); } }
+
+    /* ─── Per-element entrance choreography ─────────────────────────────── */
+    .slide.active .topbar,
+    .slide.active .footer,
+    .slide.active .eyebrow,
+    .slide.active h1,
+    .slide.active h2,
+    .slide.active .lead,
+    .slide.active .quote,
+    .slide.active .card,
+    .slide.active .point,
+    .slide.active .lane,
+    .slide.active .step,
+    .slide.active .phase,
+    .slide.active .screenshot-frame,
+    .slide.active .metric,
+    .slide.active .ask { animation: fadeUp 520ms var(--ease-expo) both; }
+
+    .slide.active .topbar   { animation-delay: 40ms;  animation-name: fadeDown; }
+    .slide.active .footer   { animation-delay: 50ms;  animation-name: fadeDown; }
+    .slide.active .eyebrow  { animation-delay: 130ms; }
+    .slide.active h1        { animation-delay: 190ms; animation-name: riseUp; }
+    .slide.active h2        { animation-delay: 190ms; animation-name: riseUp; }
+    .slide.active .lead     { animation-delay: 270ms; }
+    .slide.active .quote    { animation-delay: 210ms; animation-name: riseUp; }
+    .slide.active .ask      { animation-delay: 300ms; animation-name: riseUp; }
+
+    /* Cards */
+    .slide.active .card:nth-child(1) { animation-delay: 290ms; }
+    .slide.active .card:nth-child(2) { animation-delay: 380ms; }
+    .slide.active .card:nth-child(3) { animation-delay: 470ms; }
+
+    /* Points (slide in from inline-start) */
+    .slide.active .point:nth-child(1) { animation-delay: 270ms; animation-name: fadeInFromStart; }
+    .slide.active .point:nth-child(2) { animation-delay: 360ms; animation-name: fadeInFromStart; }
+    .slide.active .point:nth-child(3) { animation-delay: 450ms; animation-name: fadeInFromStart; }
+
+    /* Lanes */
+    .slide.active .lane:nth-child(1) { animation-delay: 270ms; }
+    .slide.active .lane:nth-child(2) { animation-delay: 345ms; }
+    .slide.active .lane:nth-child(3) { animation-delay: 420ms; }
+    .slide.active .lane:nth-child(4) { animation-delay: 495ms; }
+
+    /* Workflow steps */
+    .slide.active .step:nth-child(1) { animation-delay: 240ms; }
+    .slide.active .step:nth-child(2) { animation-delay: 310ms; }
+    .slide.active .step:nth-child(3) { animation-delay: 380ms; }
+    .slide.active .step:nth-child(4) { animation-delay: 450ms; }
+    .slide.active .step:nth-child(5) { animation-delay: 520ms; }
+
+    /* Phases */
+    .slide.active .phase:nth-child(1) { animation-delay: 260ms; }
+    .slide.active .phase:nth-child(2) { animation-delay: 340ms; }
+    .slide.active .phase:nth-child(3) { animation-delay: 420ms; }
+    .slide.active .phase:nth-child(4) { animation-delay: 500ms; }
+
+    /* Metrics */
+    .slide.active .metric:nth-child(1) { animation-delay: 280ms; }
+    .slide.active .metric:nth-child(2) { animation-delay: 360ms; }
+    .slide.active .metric:nth-child(3) { animation-delay: 440ms; }
+
+    /* Screenshots */
+    .slide.active .screenshot-frame              { animation-delay: 250ms; animation-name: revealUp; }
+    .slide.active .image-grid .screenshot-frame:nth-child(1) { animation-delay: 260ms; }
+    .slide.active .image-grid .screenshot-frame:nth-child(2) { animation-delay: 370ms; }
+
+    /* Number badges pop independently */
+    .slide.active .number                       { animation: popIn 440ms var(--ease-expo) both; }
+    .slide.active .point:nth-child(1) .number   { animation-delay: 290ms; }
+    .slide.active .point:nth-child(2) .number   { animation-delay: 380ms; }
+    .slide.active .point:nth-child(3) .number   { animation-delay: 460ms; }
+
+    /* Brand mark pops in on every slide */
+    .slide.active .brand-mark { animation: popIn 560ms var(--ease-expo) 40ms both; }
+
+    @keyframes fadeUp   { from { opacity:0; transform:translateY(22px); }  to { opacity:1; transform:none; } }
+    @keyframes fadeDown { from { opacity:0; transform:translateY(-14px); } to { opacity:1; transform:none; } }
+    @keyframes riseUp   { from { opacity:0; transform:translateY(40px); }  to { opacity:1; transform:none; } }
+    @keyframes revealUp { from { opacity:0; transform:translateY(28px) scale(.97); } to { opacity:1; transform:none; } }
+    @keyframes fadeInFromStart { from { opacity:0; transform:translateX(-22px); } to { opacity:1; transform:none; } }
+    @keyframes popIn    { from { opacity:0; transform:scale(.52); } to { opacity:1; transform:scale(1); } }
+
+    /* RTL mirror for point entrance */
+    [dir="rtl"] .slide.active .point:nth-child(1),
+    [dir="rtl"] .slide.active .point:nth-child(2),
+    [dir="rtl"] .slide.active .point:nth-child(3) { animation-name: fadeInFromEnd; }
+    @keyframes fadeInFromEnd { from { opacity:0; transform:translateX(22px); } to { opacity:1; transform:none; } }
+
+    .frame {
+      width: min(1180px, 100%);
+      height: 100%;
+      margin: 0 auto;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: var(--space-xl);
+    }
+
+    .topbar,
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+      color: var(--muted);
+      font-size: 0.86rem;
+      letter-spacing: 0;
+    }
+
+    .brand-mark {
+      display: inline-grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--ink);
+      color: var(--surface);
+      font-weight: 800;
+      margin-inline-end: var(--space-sm);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .progress {
+      width: min(280px, 36vw);
+      height: 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      overflow: hidden;
+      background: oklch(99% 0.006 92 / 0.72);
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      width: var(--progress, 8%);
+      background: var(--green);
+      border-radius: inherit;
+      transition: width 500ms var(--ease-expo);
+    }
+
+    .content {
+      display: grid;
+      align-content: center;
+      gap: var(--space-xl);
+      min-height: 0;
+    }
+
+    h1,
+    h2,
+    h3,
+    p,
+    figure {
+      margin: 0;
+    }
+
+    h1 {
+      max-width: 540px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2.6rem, 4.2vw, 5rem);
+      line-height: .95;
+      letter-spacing: 0;
+      font-weight: 700;
+    }
+
+    h2 {
+      max-width: 800px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2.5rem, 4.0vw, 5.0rem);
+      line-height: .96;
+      letter-spacing: 0;
+      font-weight: 700;
+    }
+
+    h3 {
+      font-size: clamp(1.2rem, 2vw, 1.7rem);
+      line-height: 1.16;
+      font-weight: 760;
+    }
+
+    .lead {
+      max-width: 740px;
+      color: var(--muted);
+      font-size: clamp(1.18rem, 2vw, 1.55rem);
+      line-height: 1.48;
+    }
+
+    .eyebrow {
+      color: var(--burgundy);
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: .78rem;
+      letter-spacing: .12em;
+    }
+
+    .title-grid {
+      grid-template-columns: 1fr 1.1fr;
+      align-items: stretch;
+      gap: var(--space-2xl);
+    }
+
+    .title-grid .hero-shot {
+      height: 100%;
+      max-height: 100%;
+      min-height: 0;
+    }
+
+    .title-panel {
+      display: grid;
+      gap: var(--space-lg);
+    }
+
+    .system-map {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: var(--space-xl);
+      display: grid;
+      gap: var(--space-lg);
+      min-height: 500px;
+    }
+
+    .screenshot-frame {
+      overflow: hidden;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .screenshot-frame img {
+      display: block;
+      width: 100%;
+      /* height: 100%; */
+      object-fit: cover;
+    }
+
+    .screenshot-frame.contain img {
+      object-fit: contain;
+      background: oklch(99% 0.006 92);
+    }
+
+    .screenshot-caption {
+      display: grid;
+      gap: var(--space-sm);
+      padding: var(--space-md) var(--space-lg) var(--space-lg);
+      border-top: 1px solid var(--line);
+      background: oklch(99% 0.006 92);
+    }
+
+    .screenshot-caption p {
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-lg);
+      align-items: stretch;
+    }
+
+    .image-grid .screenshot-frame {
+      min-height: 260px;
+      display: grid;
+      grid-template-rows: 1fr auto;
+    }
+
+    .image-grid .lanes {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-md);
+    }
+
+    .image-grid .lane {
+      min-height: 154px;
+      padding: var(--space-md);
+    }
+
+    .gallery-shot {
+      height: min(52vh, 470px);
+    }
+
+    .hero-shot {
+      height: min(56vh, 500px);
+    }
+
+    /* Arabic / RTL overrides */
+    [lang="ar"] {
+      font-family: "Tajawal", "Segoe UI", Tahoma, sans-serif;
+    }
+
+    [lang="ar"] h1,
+    [lang="ar"] h2,
+    [lang="ar"] .quote {
+      font-family: "Tajawal", Tahoma, sans-serif;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    [lang="ar"] h1 { font-size: clamp(2.4rem, 4vw, 4.6rem); }
+    [lang="ar"] h2 { font-size: clamp(2rem, 4.2vw, 4.8rem); }
+
+    [lang="ar"] .eyebrow { letter-spacing: 0; }
+
+    /* Language toggle */
+    .lang-btn {
+      position: fixed;
+      top: 14px;
+      right: 22px;
+      z-index: 20;
+      border-radius: 999px;
+      padding: 0 14px;
+      min-height: 34px;
+      font-size: .82rem;
+      font-weight: 700;
+      background: oklch(99% 0.006 92 / .92);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      cursor: pointer;
+      letter-spacing: .04em;
+    }
+
+    [dir="rtl"] .lang-btn {
+      right: auto;
+      left: 22px;
+    }
+
+    [dir="rtl"] .controls {
+      right: auto;
+      left: 20px;
+    }
+
+    [dir="rtl"] .print-help {
+      left: auto;
+      right: 20px;
+    }
+
+    .wide-shot {
+      height: min(55vh, 460px);
+    }
+
+    .compact-shot {
+      height: min(34vh, 300px);
+    }
+
+    .mini-dashboard {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-sm);
+    }
+
+    .room {
+      min-height: 62px;
+      border-radius: 6px;
+      border: 1px solid color-mix(in oklch, var(--line), var(--ink) 8%);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      background: oklch(95% 0.016 108);
+    }
+
+    .room.available { background: var(--green-soft); color: var(--green); }
+    .room.occupied { background: oklch(91% 0.05 18); color: var(--burgundy); }
+    .room.reserved { background: oklch(91% 0.045 84); color: oklch(39% 0.09 72); }
+    .room.maintenance { background: oklch(91% 0.025 235); color: var(--blue); }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-md);
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: var(--space-md);
+      background: oklch(98% 0.008 92);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: clamp(1.6rem, 3vw, 2.3rem);
+      line-height: 1;
+      color: var(--ink);
+    }
+
+    .metric span {
+      display: block;
+      margin-top: var(--space-sm);
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: .95fr 1.05fr;
+      gap: var(--space-2xl);
+      align-items: center;
+    }
+
+    .stack {
+      display: grid;
+      gap: var(--space-lg);
+    }
+
+    .points {
+      display: grid;
+      gap: var(--space-md);
+    }
+
+    .point {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--space-md);
+      align-items: start;
+      padding: var(--space-md);
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: oklch(99% 0.006 92 / .78);
+    }
+
+    .number {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--green);
+      color: var(--surface);
+      font-weight: 800;
+      flex: 0 0 auto;
+    }
+
+    .point p,
+    .card p,
+    .lane p {
+      color: var(--muted);
+      line-height: 1.42;
+      margin-top: var(--space-xs);
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-lg);
+    }
+
+    .card {
+      min-height: 210px;
+      display: grid;
+      align-content: start;
+      gap: var(--space-md);
+      padding: var(--space-lg);
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      box-shadow: 0 12px 36px oklch(20% 0.025 165 / .08);
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+    }
+
+    .chip {
+      border-radius: 999px;
+      border: 1px solid color-mix(in oklch, var(--green), var(--line) 58%);
+      background: var(--green-soft);
+      color: var(--green);
+      font-weight: 760;
+      padding: 7px 11px;
+      font-size: .82rem;
+      white-space: nowrap;
+    }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--space-md);
+    }
+
+    .step {
+      min-height: 240px;
+      padding: var(--space-lg);
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      display: grid;
+      align-content: space-between;
+      gap: var(--space-lg);
+    }
+
+    .step strong {
+      font-size: 2rem;
+      color: var(--burgundy);
+      line-height: 1;
+    }
+
+    .step p {
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .lanes {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-lg);
+    }
+
+    .lane {
+      min-height: 280px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: var(--space-lg);
+      display: grid;
+      align-content: start;
+      gap: var(--space-md);
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-md);
+    }
+
+    .phase {
+      border-radius: 8px;
+      padding: var(--space-lg);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      min-height: 250px;
+      display: grid;
+      align-content: start;
+      gap: var(--space-md);
+    }
+
+    .phase .tag {
+      width: fit-content;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: oklch(91% 0.045 84);
+      color: oklch(38% 0.09 72);
+      font-weight: 800;
+      font-size: .8rem;
+    }
+
+    .quote {
+      max-width: 940px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2rem, 4.5vw, 4.8rem);
+      line-height: 1.02;
+      color: var(--ink);
+    }
+
+    .ask {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: var(--space-xl);
+      padding: var(--space-xl);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--ink);
+      color: var(--surface);
+    }
+
+    .ask p {
+      color: oklch(88% 0.018 92);
+      line-height: 1.5;
+      max-width: 720px;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: 0 var(--space-lg);
+      border-radius: 999px;
+      background: var(--gold);
+      color: var(--ink);
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .controls {
+      position: fixed;
+      right: 20px;
+      bottom: 18px;
+      display: flex;
+      gap: var(--space-sm);
+      z-index: 10;
+    }
+
+    button {
+      border: 1px solid color-mix(in oklch, var(--ink), var(--line) 62%);
+      background: oklch(99% 0.006 92 / .88);
+      color: var(--ink);
+      border-radius: 999px;
+      min-width: 46px;
+      min-height: 42px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 160ms ease, color 160ms ease, transform 110ms var(--ease-quart), box-shadow 160ms ease;
+    }
+
+    button:hover {
+      background: var(--ink);
+      color: var(--surface);
+      box-shadow: 0 4px 18px oklch(20% 0.025 165 / .2);
+    }
+
+    button:active { transform: scale(0.91); box-shadow: none; }
+
+    /* ─── Hover micro-interactions ───────────────────────────────────────── */
+    .card {
+      transition: transform 200ms var(--ease-quart), box-shadow 200ms var(--ease-quart);
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 24px 58px oklch(20% 0.025 165 / .14);
+    }
+
+    .point {
+      transition: background 150ms ease, transform 180ms var(--ease-quart);
+    }
+    .point:hover {
+      background: oklch(98% 0.01 108 / .96);
+      transform: translateX(4px);
+    }
+    [dir="rtl"] .point:hover { transform: translateX(-4px); }
+
+    .lane {
+      transition: transform 200ms var(--ease-quart), box-shadow 200ms var(--ease-quart);
+    }
+    .lane:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px oklch(20% 0.025 165 / .1);
+    }
+
+    .step {
+      transition: transform 200ms var(--ease-quart), box-shadow 200ms var(--ease-quart);
+    }
+    .step:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 18px 46px oklch(20% 0.025 165 / .12);
+    }
+
+    .phase {
+      transition: transform 200ms var(--ease-quart), box-shadow 200ms var(--ease-quart);
+    }
+    .phase:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 18px 46px oklch(20% 0.025 165 / .12);
+    }
+
+    .chip {
+      transition: transform 150ms var(--ease-quart), background 150ms ease;
+    }
+    .chip:hover {
+      transform: scale(1.08);
+      background: color-mix(in oklch, var(--green-soft), var(--green) 15%);
+    }
+
+    .cta {
+      transition: transform 180ms var(--ease-quart), box-shadow 180ms var(--ease-quart);
+      cursor: pointer;
+    }
+    .cta:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 28px oklch(74% 0.125 84 / .44);
+    }
+    .cta:active { transform: scale(0.97); }
+
+    .screenshot-frame {
+      transition: box-shadow 260ms var(--ease-quart);
+    }
+    .screenshot-frame:hover {
+      box-shadow: 0 32px 88px oklch(20% 0.025 165 / .2);
+    }
+    .screenshot-frame img {
+      transition: transform 480ms var(--ease-quart);
+    }
+    .screenshot-frame:hover img { transform: scale(1.024); }
+
+    /* ─── Reduced motion ─────────────────────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      .slide.active, .slide.leaving,
+      .slide.active *, .slide.leaving * {
+        animation: none !important;
+        transition-duration: 1ms !important;
+      }
+    }
+
+    .print-help {
+      position: fixed;
+      left: 20px;
+      bottom: 24px;
+      color: var(--muted);
+      font-size: .84rem;
+      z-index: 10;
+    }
+
+    @media (max-width: 920px) {
+      body { overflow: auto; }
+      .deck { height: auto; }
+      .slide,
+      .slide.active {
+        position: relative;
+        min-height: 100vh;
+        display: grid;
+      }
+      .slide:not(.active) { display: none; }
+      .title-grid,
+      .split,
+      .ask {
+        grid-template-columns: 1fr;
+      }
+      .card-grid,
+      .image-grid,
+      .lanes,
+      .timeline,
+      .workflow,
+      .metric-row {
+        grid-template-columns: 1fr;
+      }
+      .system-map { min-height: auto; }
+      .gallery-shot,
+      .hero-shot,
+      .wide-shot,
+      .compact-shot {
+        height: auto;
+        min-height: 260px;
+      }
+      .controls,
+      .print-help { display: none; }
+    }
+
+    @media print {
+      body {
+        overflow: visible;
+        background: var(--paper);
+      }
+      .deck {
+        height: auto;
+      }
+      .slide,
+      .slide.active {
+        position: relative;
+        display: grid !important;
+        width: 100vw;
+        min-height: 100vh;
+        page-break-after: always;
+        animation: none;
+      }
+      .controls,
+      .print-help {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="deck" aria-live="polite">
+    <section class="slide active">
+      <div class="frame">
+        <div class="topbar"><div class="brand"><span class="brand-mark">AL</span>Asyut Lawyers Club</div><span>Client presentation</span></div>
+        <div class="content title-grid">
+          <div class="title-panel">
+            <p class="eyebrow">A practical digital operating system</p>
+            <h1>Asyut Lawyers Club & Resort Management System</h1>
+            <p class="lead">A locally hosted application that gives management direct control over reservations, memberships, housekeeping, payments, receipts, privacy, and daily reporting.</p>
+          </div>
+          <figure class="screenshot-frame hero-shot" aria-label="Proposed dashboard UI preview">
+            <img src="main_ui.jpg" alt="Proposed dashboard showing revenue, occupancy, room status, recent activity, and monthly revenue" />
+          </figure>
+        </div>
+        <div class="footer"><span>Prepared for decision makers</span><div class="progress"><span></span></div></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="frame">
+        <div class="topbar"><div class="brand"><span class="brand-mark">AL</span>Current challenge</div><span>Why change now</span></div>
+        <div class="content split">
+          <div class="stack">
+            <p class="eyebrow">The hidden cost of manual work</p>
+            <h2>Every manual reservation creates risk.</h2>
+            <p class="lead">When room status, member discounts, ID documents, payments, and housekeeping are separated, management loses time, accuracy, and visibility.</p>
+          </div>
+          <div class="points">
+            <div class="point"><span class="number">1</span><div><h3>Double booking and status confusion</h3><p>Staff need a single source of truth for available, occupied, reserved, dirty, and maintenance rooms.</p></div></div>
+            <div class="point"><span class="number">2</span><div><h3>Discounts and payments are hard to audit</h3><p>Member discounts must be automatic and traceable so finance reports are trusted.</p></div></div>
+            <div class="point"><span class="number">3</span><div><h3>Sensitive ID documents need protection</h3><p>Guest and companion ID images should be encrypted and visible only to authorized users.</p></div></div>
+          </div>
+        </div>
+        <div class="footer"><span>Problem</span><div class="progress"><span></span></div></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="frame">
+        <div class="topbar"><div class="brand"><span class="brand-mark">AL</span>The solution</div><span>One controlled workflow</span></div>
+        <div class="content">
+          <p class="eyebrow">Proposed system</p>
+          <h2>One application that runs the daily operation from check-in to reporting.</h2>
+          <div class="card-grid">
+            <div class="card"><h3>Front desk clarity</h3><p>Reservation officers select dates, choose rooms from a visual plan, record guests and companions, collect payment, and print receipts.</p></div>
+            <div class="card"><h3>Membership accuracy</h3><p>Membership officers register and renew lawyers using the mandatory syndicate number, with member status linked directly to discounts.</p></div>
+            <div class="card"><h3>Management control</h3><p>Administrators manage prices, users, receipt text, audit logs, revenue, occupancy, and member growth from a focused dashboard.</p></div>
+          </div>
+        </div>
+        <div class="footer"><span>Solution</span><div class="progress"><span></span></div></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="frame">
+        <div class="topbar"><div class="brand"><span class="brand-mark">AL</span>Proposed UI</div><span>What the client will see</span></div>
+        <div class="content">
+          <div class="stack">
+            <p class="eyebrow">Visual product direction</p>
+            <h2>A clean staff interface designed for fast daily use.</h2>
+          </div>
+          <figure class="screenshot-frame contain gallery-shot" aria-label="Full proposed UI image board">
+            <img src="ChatGPT Image Apr 27, 2026, 08_28_22 PM.png" alt="Collection of proposed UI screens including dashboard, room plan, reservation, companions, members, reports, housekeeping, and receipt preview" />
+          </figure>
+        </div>
+        <div class="footer"><span>UI Preview</span><div class="progress"><span></span></div></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="frame">
+        <div class="topbar"><div class="brand"><span class="brand-mark">AL</span>Business impact</div><span>What the client gains</span></div>
+        <div class="content split">
+          <div>
+            <p class="eyebrow">Management outcomes</p>
+            <h2>Less guessing. Faster service. Stronger control.</h2>
+          </div>
+          <div class="points">
+            <div class="point"><span class="number">A</span><div><h3>Revenue visibility</h3><p>Daily and monthly totals show how the resort is performing without waiting for manual summaries.</p></div></div>
+            <div class="point"><span class="number">B</span><div><h3>Higher staff accountability</h3><p>Audit logs record who changed reservations, prices, users, and important operational records.</p></div></div>
+            <div class="point"><span class="number">C</span><div><h3>Better guest experience</h3><p>Officers can complete check-in, payment, receipt printing, and room assignment in one guided process.</p></div></div>
+          </div>
+        </div>
+        <div class="footer"><span>Value</span><div class="progress"><span></span></div></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="frame">
+        <div class="topbar"><div class="brand"><span class="brand-mark">AL</span>Core modules</div><span>Complete MVP scope</span></div>
+        <div class="content">
+          <p class="eyebrow">What will be delivered</p>
+          <h2>A focused set of modules for the real work of the club.</h2>
+          <div class="image-grid">
+            <figure class="screenshot-frame contain compact-shot" aria-label="Housekeeping screen preview">
+              <img src="house_keeping.jpg" alt="Proposed housekeeping screen showing clean and dirty room status controls" />
+              <figcaption class="screenshot-caption"><h3>Housekeeping control</h3><p>Staff can mark rooms clean or dirty before check-in.</p></figcaption>
+            </figure>
+            <div class="lanes">
+              <div class="lane"><h3>Reservations</h3><p>Room selection, date checks, guest details, companion rules, ID upload, payment, receipt printing.</p></div>
+              <div class="lane"><h3>Membership</h3><p>Member registration, syndicate number uniqueness, active or expired status, renewals, reservation discounts.</p></div>
+              <div class="lane"><h3>Rooms and housekeeping</h3><p>15-room inventory, room type, view type, prices, status, visual plan, clean or dirty tracking.</p></div>
+              <div class="lane"><h3>Admin and reports</h3><p>User roles, price management, receipt editor, financial analytics, occupancy rate, audit trail.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span>Modules</span><div class="progress"><span></span></div></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="frame">
+        <div class="topbar"><div class="brand"><span class="brand-mark">AL</span>Reservation workflow</div><span>From room choice to receipt</span></div>
+        <div class="content">
+          <p class="eyebrow">Front desk experience</p>
+          <h2>A guided process that protects accuracy at each step.</h2>
+          <div class="image-grid">
+            <figure class="screenshot-frame contain compact-shot" aria-label="New reservation screen preview">
+              <img src="new_reservation.jpg" alt="Proposed reservation screen with guest details, member discount, ID upload, and price summary" />
+              <figcaption class="screenshot-caption"><h3>Guest details and payment clarity</h3><p>The officer sees the stay, rate, discount, total, and uploaded ID in one guided step.</p></figcaption>
+            </figure>
+            <figure class="screenshot-frame contain compact-shot" aria-label="Add companions screen preview">
+              <img src="add_companion.jpg" alt="Proposed companions screen with relation selection and conditional ID upload" />
+              <figcaption class="screenshot-caption"><h3>Companion rules built in</h3><p>Non-family companions require ID upload while family entries remain simpler.</p></figcaption>
+            </figure>
+          </div>
+        </div>
+        <div class="footer"><span>Workflow</span><div class="progress"><span></span></div></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="frame">
+        <div class="topbar"><div class="brand"><span class="brand-mark">AL</span>Roles and control</div><span>Security by responsibility</span></div>
+        <div class="content split">
+          <div class="stack">
+            <p class="eyebrow">Role-based access</p>
+            <h2>Each employee sees only what they need to do their job.</h2>
+            <p class="lead">This reduces accidental changes, protects sensitive information, and gives management a cleaner audit trail.</p>
+          </div>
+          <div class="points">
+            <div class="point"><span class="number">1</span><div><h3>Administrator</h3><p>Full access to users, settings, room prices, reports, receipt templates, and audit logs.</p></div></div>
+            <div class="point"><span class="number">2</span><div><h3>Membership officer</h3><p>Register, edit, search, and renew members while keeping syndicate numbers unique.</p></div></div>
+            <div class="point"><span class="number">3</span><div><h3>Reservation officer</h3><p>Manage reservations, check-in, check-out, payments, ID uploads, receipts, and housekeeping status.</p></div></div>
+          </div>
+        </div>
+        <div class="footer"><span>Access</span><div class="progress"><span></span></div></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="frame">
+        <div class="topbar"><div class="brand"><span class="brand-mark">AL</span>Privacy and reliability</div><span>Built for local operation</span></div>
+        <div class="content">
+          <p class="eyebrow">Client confidence</p>
+          <h2>Hosted inside the club, secured like a serious business system.</h2>
+          <div class="card-grid">
+            <div class="card"><h3>Local network hosting</h3><p>The server runs on a Windows machine inside the club. Staff connect through the LAN using a browser or installed PWA shortcut.</p></div>
+            <div class="card"><h3>Encrypted ID images</h3><p>Stored ID images are protected with AES-256 encryption, reducing exposure if files are accessed outside the application.</p></div>
+            <div class="card"><h3>Session protection</h3><p>JWT authentication and protected API routes ensure users must be logged in and authorized for each action.</p></div>
+          </div>
+        </div>
+        <div class="footer"><span>Security</span><div class="progress"><span></span></div></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="frame">
+        <div class="topbar"><div class="brand"><span class="brand-mark">AL</span>Room plan</div><span>Operational visibility</span></div>
+        <div class="content split">
+          <figure class="screenshot-frame contain wide-shot" aria-label="Room plan screen preview">
+            <img src="room_plan.jpg" alt="Proposed room plan screen with first floor, second floor, garden view, pool view, and color-coded room status" />
+          </figure>
+          <div class="stack">
+            <p class="eyebrow">A fast visual map</p>
+            <h2>The front desk can understand the resort in seconds.</h2>
+            <p class="lead">Color-coded room status reduces phone calls, mistakes, and delays. Dirty-room warnings prevent staff from checking guests into rooms that are not ready.</p>
+          </div>
+        </div>
+        <div class="footer"><span>Rooms</span><div class="progress"><span></span></div></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="frame">
+        <div class="topbar"><div class="brand"><span class="brand-mark">AL</span>Reporting</div><span>Management dashboard</span></div>
+        <div class="content split">
+          <div class="stack">
+            <p class="eyebrow">Decisions with numbers</p>
+            <h2>Management gets a clear view of performance.</h2>
+            <p class="lead">The dashboard translates daily operations into revenue, occupancy, member growth, and accountability.</p>
+          </div>
+          <figure class="screenshot-frame contain wide-shot" aria-label="Dashboard reporting preview">
+            <img src="main_ui.jpg" alt="Proposed dashboard screen showing KPI cards, room status, activity log, and revenue chart" />
+          </figure>
+        </div>
+        <div class="footer"><span>Reports</span><div class="progress"><span></span></div></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="frame">
+        <div class="topbar"><div class="brand"><span class="brand-mark">AL</span>Deployment</div><span>Simple for staff</span></div>
+        <div class="content">
+          <p class="eyebrow">How it will run</p>
+          <h2>No complex cloud dependency. No special client hardware.</h2>
+          <div class="card-grid">
+            <div class="card"><h3>Windows installer</h3><p>An executable package installs the backend, database, and frontend build on the club server.</p></div>
+            <div class="card"><h3>Browser access</h3><p>Any PC or mobile on the local network can access the system through a static local IP address.</p></div>
+            <div class="card"><h3>Installable app feel</h3><p>PWA support lets staff add the application as a desktop shortcut with a clean standalone window.</p></div>
+          </div>
+        </div>
+        <div class="footer"><span>Deployment</span><div class="progress"><span></span></div></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="frame">
+        <div class="topbar"><div class="brand"><span class="brand-mark">AL</span>Delivery plan</div><span>Phased and practical</span></div>
+        <div class="content">
+          <p class="eyebrow">MVP roadmap</p>
+          <h2>Deliver value early, then add polish and advanced control.</h2>
+          <div class="timeline">
+            <div class="phase"><span class="tag">Phase 1</span><h3>Foundation</h3><p>Project setup, server, database, installer baseline, login, JWT, and 15-room seed data.</p></div>
+            <div class="phase"><span class="tag">Phase 2</span><h3>Reservation path</h3><p>Guest data, ID upload, companion rules, price calculation, payment, and receipt printing.</p></div>
+            <div class="phase"><span class="tag">Phase 3</span><h3>Management tools</h3><p>Membership, price updates, housekeeping status, and visual room plan.</p></div>
+            <div class="phase"><span class="tag">Phase 4</span><h3>Security and polish</h3><p>ID encryption, PWA install, analytics, receipt editor, and final operational refinements.</p></div>
+          </div>
+        </div>
+        <div class="footer"><span>Roadmap</span><div class="progress"><span></span></div></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="frame">
+        <div class="topbar"><div class="brand"><span class="brand-mark">AL</span>Closing case</div><span>Why approve</span></div>
+        <div class="content">
+          <p class="eyebrow">Decision message</p>
+          <p class="quote">This system turns the club's daily operation into a controlled, measurable, and secure process.</p>
+          <div class="ask">
+            <div>
+              <h3>Recommended next step</h3>
+              <p>Approve the MVP build, confirm final receipt wording and room pricing rules, and prepare the existing member and reservation Excel sheets for migration.</p>
+            </div>
+            <span class="cta">Approve MVP kickoff</span>
+          </div>
+        </div>
+        <div class="footer"><span>Decision</span><div class="progress"><span></span></div></div>
+      </div>
+    </section>
+  </main>
+
+  <button type="button" class="lang-btn" id="langBtn" aria-label="Switch language">العربية</button>
+  <div class="print-help" id="printHelp">Use Left / Right arrows to present. Press Ctrl+P to export PDF.</div>
+  <div class="controls" aria-label="Presentation controls">
+    <button type="button" id="previous" aria-label="Previous slide">&lt;</button>
+    <button type="button" id="next" aria-label="Next slide">&gt;</button>
+  </div>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const progressBars = Array.from(document.querySelectorAll('.progress span'));
+    let current = 0;
+    let currentLang = 'en'; // hoisted — overwritten by language switcher below
+
+    let animating = false;
+
+    function showSlide(index, dir) {
+      const target = Math.max(0, Math.min(index, slides.length - 1));
+      if (target === current || animating) return;
+      animating = true;
+
+      const outgoing = slides[current];
+      const incoming = slides[target];
+      const direction = dir || (target > current ? 'next' : 'prev');
+
+      outgoing.dataset.dir = direction;
+      incoming.dataset.dir = direction;
+
+      outgoing.classList.remove('active');
+      outgoing.classList.add('leaving');
+      incoming.classList.add('active');
+      current = target;
+
+      const finish = () => { outgoing.classList.remove('leaving'); animating = false; };
+      outgoing.addEventListener('animationend', finish, { once: true });
+      setTimeout(finish, 700); // fallback for reduced-motion
+
+      const pct = `${((current + 1) / slides.length) * 100}%`;
+      progressBars.forEach(b => b.style.setProperty('--progress', pct));
+      document.title = currentLang === 'ar'
+        ? `شريحة ${current + 1} من ${slides.length} - نادي محامي أسيوط`
+        : `Slide ${current + 1} of ${slides.length} - Asyut Lawyers Club`;
+    }
+
+    document.getElementById('previous').addEventListener('click', () => showSlide(current - 1, 'prev'));
+    document.getElementById('next').addEventListener('click', () => showSlide(current + 1, 'next'));
+
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowRight' || event.key === 'PageDown' || event.key === ' ') {
+        event.preventDefault();
+        showSlide(current + 1, 'next');
+      }
+      if (event.key === 'ArrowLeft' || event.key === 'PageUp') {
+        event.preventDefault();
+        showSlide(current - 1, 'prev');
+      }
+      if (event.key === 'Home') showSlide(0, 'prev');
+      if (event.key === 'End') showSlide(slides.length - 1, 'next');
+    });
+
+    // ── Language switcher ────────────────────────────────────────────────────
+    // (currentLang is hoisted above)
+    const translations = {
+      en: {
+        langBtnLabel: 'العربية',
+        printHelp: 'Use Left / Right arrows to present. Press Ctrl+P to export PDF.',
+        slides: [
+          {
+            topbarLeft: 'Asyut Lawyers Club', topbarRight: 'Client presentation',
+            eyebrow: 'A practical digital operating system',
+            h1: 'Asyut Lawyers Club &amp; Resort Management System',
+            lead: 'A locally hosted application that gives management direct control over reservations, memberships, housekeeping, payments, receipts, privacy, and daily reporting.',
+            footerLeft: 'Prepared for decision makers'
+          },
+          {
+            topbarLeft: 'Current challenge', topbarRight: 'Why change now',
+            eyebrow: 'The hidden cost of manual work',
+            h2: 'Every manual reservation creates risk.',
+            lead: 'When room status, member discounts, ID documents, payments, and housekeeping are separated, management loses time, accuracy, and visibility.',
+            points: [
+              { title: 'Double booking and status confusion', body: 'Staff need a single source of truth for available, occupied, reserved, dirty, and maintenance rooms.' },
+              { title: 'Discounts and payments are hard to audit', body: 'Member discounts must be automatic and traceable so finance reports are trusted.' },
+              { title: 'Sensitive ID documents need protection', body: 'Guest and companion ID images should be encrypted and visible only to authorized users.' }
+            ],
+            footerLeft: 'Problem'
+          },
+          {
+            topbarLeft: 'The solution', topbarRight: 'One controlled workflow',
+            eyebrow: 'Proposed system',
+            h2: 'One application that runs the daily operation from check-in to reporting.',
+            cards: [
+              { title: 'Front desk clarity', body: 'Reservation officers select dates, choose rooms from a visual plan, record guests and companions, collect payment, and print receipts.' },
+              { title: 'Membership accuracy', body: 'Membership officers register and renew lawyers using the mandatory syndicate number, with member status linked directly to discounts.' },
+              { title: 'Management control', body: 'Administrators manage prices, users, receipt text, audit logs, revenue, occupancy, and member growth from a focused dashboard.' }
+            ],
+            footerLeft: 'Solution'
+          },
+          {
+            topbarLeft: 'Proposed UI', topbarRight: 'What the client will see',
+            eyebrow: 'Visual product direction',
+            h2: 'A clean staff interface designed for fast daily use.',
+            footerLeft: 'UI Preview'
+          },
+          {
+            topbarLeft: 'Business impact', topbarRight: 'What the client gains',
+            eyebrow: 'Management outcomes',
+            h2: 'Less guessing. Faster service. Stronger control.',
+            points: [
+              { title: 'Revenue visibility', body: 'Daily and monthly totals show how the resort is performing without waiting for manual summaries.' },
+              { title: 'Higher staff accountability', body: 'Audit logs record who changed reservations, prices, users, and important operational records.' },
+              { title: 'Better guest experience', body: 'Officers can complete check-in, payment, receipt printing, and room assignment in one guided process.' }
+            ],
+            footerLeft: 'Value'
+          },
+          {
+            topbarLeft: 'Core modules', topbarRight: 'Complete MVP scope',
+            eyebrow: 'What will be delivered',
+            h2: 'A focused set of modules for the real work of the club.',
+            lanes: [
+              { title: 'Reservations', body: 'Room selection, date checks, guest details, companion rules, ID upload, payment, receipt printing.' },
+              { title: 'Membership', body: 'Member registration, syndicate number uniqueness, active or expired status, renewals, reservation discounts.' },
+              { title: 'Rooms and housekeeping', body: '15-room inventory, room type, view type, prices, status, visual plan, clean or dirty tracking.' },
+              { title: 'Admin and reports', body: 'User roles, price management, receipt editor, financial analytics, occupancy rate, audit trail.' }
+            ],
+            hkCaption: { title: 'Housekeeping control', body: 'Staff can mark rooms clean or dirty before check-in.' },
+            footerLeft: 'Modules'
+          },
+          {
+            topbarLeft: 'Reservation workflow', topbarRight: 'From room choice to receipt',
+            eyebrow: 'Front desk experience',
+            h2: 'A guided process that protects accuracy at each step.',
+            resCaption: { title: 'Guest details and payment clarity', body: 'The officer sees the stay, rate, discount, total, and uploaded ID in one guided step.' },
+            compCaption: { title: 'Companion rules built in', body: 'Non-family companions require ID upload while family entries remain simpler.' },
+            footerLeft: 'Workflow'
+          },
+          {
+            topbarLeft: 'Roles and control', topbarRight: 'Security by responsibility',
+            eyebrow: 'Role-based access',
+            h2: 'Each employee sees only what they need to do their job.',
+            lead: 'This reduces accidental changes, protects sensitive information, and gives management a cleaner audit trail.',
+            points: [
+              { title: 'Administrator', body: 'Full access to users, settings, room prices, reports, receipt templates, and audit logs.' },
+              { title: 'Membership officer', body: 'Register, edit, search, and renew members while keeping syndicate numbers unique.' },
+              { title: 'Reservation officer', body: 'Manage reservations, check-in, check-out, payments, ID uploads, receipts, and housekeeping status.' }
+            ],
+            footerLeft: 'Access'
+          },
+          {
+            topbarLeft: 'Privacy and reliability', topbarRight: 'Built for local operation',
+            eyebrow: 'Client confidence',
+            h2: 'Hosted inside the club, secured like a serious business system.',
+            cards: [
+              { title: 'Local network hosting', body: 'The server runs on a Windows machine inside the club. Staff connect through the LAN using a browser or installed PWA shortcut.' },
+              { title: 'Encrypted ID images', body: 'Stored ID images are protected with AES-256 encryption, reducing exposure if files are accessed outside the application.' },
+              { title: 'Session protection', body: 'JWT authentication and protected API routes ensure users must be logged in and authorized for each action.' }
+            ],
+            footerLeft: 'Security'
+          },
+          {
+            topbarLeft: 'Room plan', topbarRight: 'Operational visibility',
+            eyebrow: 'A fast visual map',
+            h2: 'The front desk can understand the resort in seconds.',
+            lead: 'Color-coded room status reduces phone calls, mistakes, and delays. Dirty-room warnings prevent staff from checking guests into rooms that are not ready.',
+            footerLeft: 'Rooms'
+          },
+          {
+            topbarLeft: 'Reporting', topbarRight: 'Management dashboard',
+            eyebrow: 'Decisions with numbers',
+            h2: 'Management gets a clear view of performance.',
+            lead: 'The dashboard translates daily operations into revenue, occupancy, member growth, and accountability.',
+            footerLeft: 'Reports'
+          },
+          {
+            topbarLeft: 'Deployment', topbarRight: 'Simple for staff',
+            eyebrow: 'How it will run',
+            h2: 'No complex cloud dependency. No special client hardware.',
+            cards: [
+              { title: 'Windows installer', body: 'An executable package installs the backend, database, and frontend build on the club server.' },
+              { title: 'Browser access', body: 'Any PC or mobile on the local network can access the system through a static local IP address.' },
+              { title: 'Installable app feel', body: 'PWA support lets staff add the application as a desktop shortcut with a clean standalone window.' }
+            ],
+            footerLeft: 'Deployment'
+          },
+          {
+            topbarLeft: 'Delivery plan', topbarRight: 'Phased and practical',
+            eyebrow: 'MVP roadmap',
+            h2: 'Deliver value early, then add polish and advanced control.',
+            phases: [
+              { tag: 'Phase 1', title: 'Foundation', body: 'Project setup, server, database, installer baseline, login, JWT, and 15-room seed data.' },
+              { tag: 'Phase 2', title: 'Reservation path', body: 'Guest data, ID upload, companion rules, price calculation, payment, and receipt printing.' },
+              { tag: 'Phase 3', title: 'Management tools', body: 'Membership, price updates, housekeeping status, and visual room plan.' },
+              { tag: 'Phase 4', title: 'Security and polish', body: 'ID encryption, PWA install, analytics, receipt editor, and final operational refinements.' }
+            ],
+            footerLeft: 'Roadmap'
+          },
+          {
+            topbarLeft: 'Closing case', topbarRight: 'Why approve',
+            eyebrow: 'Decision message',
+            quote: 'This system turns the club\'s daily operation into a controlled, measurable, and secure process.',
+            askTitle: 'Recommended next step',
+            askBody: 'Approve the MVP build, confirm final receipt wording and room pricing rules, and prepare the existing member and reservation Excel sheets for migration.',
+            cta: 'Approve MVP kickoff',
+            footerLeft: 'Decision'
+          }
+        ]
+      },
+      ar: {
+        langBtnLabel: 'English',
+        printHelp: 'استخدم أسهم اليسار / اليمين للتنقل. اضغط Ctrl+P لتصدير PDF.',
+        slides: [
+          {
+            topbarLeft: 'نادي محامي أسيوط', topbarRight: 'عرض تقديمي للعميل',
+            eyebrow: 'نظام تشغيلي رقمي متكامل',
+            h1: 'نظام إدارة نادي ومنتجع محامي أسيوط',
+            lead: 'تطبيق محلي الاستضافة يمنح الإدارة سيطرة كاملة على الحجوزات والعضويات والتدبير المنزلي والمدفوعات والإيصالات والخصوصية والتقارير اليومية.',
+            footerLeft: 'معدّ لصانعي القرار'
+          },
+          {
+            topbarLeft: 'التحديات الحالية', topbarRight: 'لماذا التغيير الآن',
+            eyebrow: 'التكلفة الخفية للعمل اليدوي',
+            h2: 'كل حجز يدوي يُشكّل مخاطرة.',
+            lead: 'حين تتفرق حالة الغرف والخصومات ووثائق الهوية والمدفوعات والتدبير المنزلي، تفقد الإدارة وقتها ودقتها ورؤيتها.',
+            points: [
+              { title: 'تضارب الحجوزات والتباس حالة الغرف', body: 'يحتاج الموظفون إلى مصدر واحد موثوق لمعرفة الغرف المتاحة والمشغولة والمحجوزة.' },
+              { title: 'صعوبة تدقيق الخصومات والمدفوعات', body: 'يجب أن تكون خصومات الأعضاء تلقائية وقابلة للتتبع حتى تُؤتمن التقارير المالية.' },
+              { title: 'وثائق الهوية الحساسة تحتاج حماية', body: 'يجب تشفير صور هويات النزلاء والمرافقين وإتاحتها للمستخدمين المصرح لهم فقط.' }
+            ],
+            footerLeft: 'المشكلة'
+          },
+          {
+            topbarLeft: 'الحل', topbarRight: 'سير عمل موحّد ومضبوط',
+            eyebrow: 'النظام المقترح',
+            h2: 'تطبيق واحد يُدير العمليات اليومية من تسجيل الوصول حتى إعداد التقارير.',
+            cards: [
+              { title: 'وضوح تام على الاستقبال', body: 'يختار موظفو الحجز التواريخ والغرف ويُسجّلون بيانات النزلاء والمرافقين ويستوفون الدفع ويطبعون الإيصالات.' },
+              { title: 'دقة في إدارة العضويات', body: 'يُسجّل موظفو العضوية المحامين ويجددون اشتراكاتهم باستخدام رقم النقابة الفريد، مرتبطًا تلقائيًا بالخصومات.' },
+              { title: 'سيطرة كاملة للإدارة', body: 'يتحكم المديرون في الأسعار والمستخدمين والإيصالات وسجلات التدقيق والإيرادات ومعدل الإشغال ونمو العضوية.' }
+            ],
+            footerLeft: 'الحل'
+          },
+          {
+            topbarLeft: 'واجهة النظام المقترحة', topbarRight: 'ما سيراه العميل',
+            eyebrow: 'التوجه البصري للمنتج',
+            h2: 'واجهة نظيفة مصممة للاستخدام اليومي السريع من قِبل الموظفين.',
+            footerLeft: 'معاينة الواجهة'
+          },
+          {
+            topbarLeft: 'القيمة التجارية', topbarRight: 'ما يكسبه العميل',
+            eyebrow: 'نتائج على مستوى الإدارة',
+            h2: 'تخمين أقل. خدمة أسرع. سيطرة أقوى.',
+            points: [
+              { title: 'رؤية واضحة للإيرادات', body: 'تُظهر الإجماليات اليومية والشهرية أداء المنتجع دون انتظار ملخصات يدوية.' },
+              { title: 'مساءلة أعلى للموظفين', body: 'تُسجّل سجلات التدقيق من غيّر الحجوزات والأسعار والمستخدمين والسجلات التشغيلية الهامة.' },
+              { title: 'تجربة أفضل للنزلاء', body: 'يستطيع الموظفون إتمام تسجيل الوصول والدفع وطباعة الإيصال وتعيين الغرفة في عملية موحدة.' }
+            ],
+            footerLeft: 'القيمة'
+          },
+          {
+            topbarLeft: 'الوحدات الأساسية', topbarRight: 'نطاق MVP الكامل',
+            eyebrow: 'ما سيُسلَّم',
+            h2: 'مجموعة وحدات مركّزة لعمل النادي الفعلي.',
+            lanes: [
+              { title: 'الحجوزات', body: 'اختيار الغرفة، فحص التواريخ، بيانات النزلاء، قواعد المرافقين، رفع الهوية، الدفع، طباعة الإيصال.' },
+              { title: 'العضوية', body: 'تسجيل الأعضاء، فرادة رقم النقابة، الحالة نشطة أو منتهية، التجديد، خصومات الحجز.' },
+              { title: 'الغرف والتدبير المنزلي', body: 'مخزون 15 غرفة، نوع الغرفة، نوع الإطلالة، الأسعار، الحالة، خريطة بصرية، تتبع نظافة الغرف.' },
+              { title: 'الإدارة والتقارير', body: 'أدوار المستخدمين، إدارة الأسعار، محرر الإيصالات، التحليلات المالية، معدل الإشغال، مسار التدقيق.' }
+            ],
+            hkCaption: { title: 'التحكم بالتدبير المنزلي', body: 'يستطيع الموظفون تحديد الغرف نظيفة أو متسخة قبل تسجيل وصول النزلاء.' },
+            footerLeft: 'الوحدات'
+          },
+          {
+            topbarLeft: 'سير عملية الحجز', topbarRight: 'من اختيار الغرفة إلى الإيصال',
+            eyebrow: 'تجربة موظف الاستقبال',
+            h2: 'عملية موجَّهة تحمي الدقة في كل خطوة.',
+            resCaption: { title: 'وضوح تفاصيل النزيل والدفع', body: 'يرى الموظف الإقامة والسعر والخصم والإجمالي والهوية المرفوعة في خطوة واحدة.' },
+            compCaption: { title: 'قواعد المرافقين مضمّنة', body: 'يُلزَم المرافقون من غير العائلة برفع الهوية بينما تظل خيارات العائلة أبسط.' },
+            footerLeft: 'سير العمل'
+          },
+          {
+            topbarLeft: 'الأدوار والتحكم', topbarRight: 'الأمان بالمسؤولية',
+            eyebrow: 'التحكم القائم على الأدوار',
+            h2: 'كل موظف لا يرى إلا ما يحتاجه لأداء عمله.',
+            lead: 'يُقلّص ذلك التغييرات غير المقصودة، ويحمي المعلومات الحساسة، ويمنح الإدارة مسار تدقيق أنظف.',
+            points: [
+              { title: 'المدير العام', body: 'صلاحية كاملة على المستخدمين والإعدادات وأسعار الغرف والتقارير وقوالب الإيصالات وسجلات التدقيق.' },
+              { title: 'موظف العضوية', body: 'تسجيل الأعضاء وتعديلهم والبحث وتجديد العضويات مع ضمان فرادة أرقام النقابة.' },
+              { title: 'موظف الحجز', body: 'إدارة الحجوزات وتسجيل الوصول والمغادرة والمدفوعات ورفع الهوية والإيصالات وحالة التدبير المنزلي.' }
+            ],
+            footerLeft: 'الصلاحيات'
+          },
+          {
+            topbarLeft: 'الخصوصية والموثوقية', topbarRight: 'مُصمَّم للتشغيل المحلي',
+            eyebrow: 'ثقة العميل',
+            h2: 'مُستضاف داخل النادي، مؤمَّن كنظام أعمال احترافي.',
+            cards: [
+              { title: 'استضافة على الشبكة الداخلية', body: 'يعمل الخادم على جهاز Windows داخل النادي. يتصل الموظفون عبر الشبكة المحلية بمتصفح أو اختصار PWA.' },
+              { title: 'صور الهوية مشفّرة', body: 'صور الهوية المخزّنة محمية بتشفير AES-256، مما يُقلّص كشفها في حال الوصول خارج التطبيق.' },
+              { title: 'حماية الجلسة', body: 'تضمن مصادقة JWT والمسارات المحمية أن المستخدمين مُسجَّلون ومصرَّح لهم بكل إجراء.' }
+            ],
+            footerLeft: 'الأمان'
+          },
+          {
+            topbarLeft: 'خريطة الغرف', topbarRight: 'رؤية تشغيلية فورية',
+            eyebrow: 'خريطة بصرية سريعة',
+            h2: 'يستطيع موظف الاستقبال فهم وضع المنتجع في ثوانٍ.',
+            lead: 'تقليل المكالمات والأخطاء والتأخير بفضل الألوان الدالة على حالة كل غرفة. تحذيرات تمنع تسجيل وصول نزيل في غرفة غير جاهزة.',
+            footerLeft: 'الغرف'
+          },
+          {
+            topbarLeft: 'التقارير', topbarRight: 'لوحة تحكم إدارية',
+            eyebrow: 'قرارات مبنية على أرقام',
+            h2: 'تحصل الإدارة على رؤية واضحة لمستوى الأداء.',
+            lead: 'تُترجم لوحة التحكم العمليات اليومية إلى إيرادات ومعدل إشغال ونمو عضوية ومساءلة.',
+            footerLeft: 'التقارير'
+          },
+          {
+            topbarLeft: 'النشر والتركيب', topbarRight: 'بسيط للموظفين',
+            eyebrow: 'كيف سيعمل النظام',
+            h2: 'لا تبعية للسحابة. لا أجهزة خاصة.',
+            cards: [
+              { title: 'مثبّت Windows', body: 'حزمة تنفيذية تثبّت الواجهة الخلفية وقاعدة البيانات والواجهة الأمامية على خادم النادي.' },
+              { title: 'وصول عبر المتصفح', body: 'أي جهاز كمبيوتر أو هاتف على الشبكة المحلية يصل إلى النظام عبر عنوان IP ثابت.' },
+              { title: 'تجربة تطبيق مثبَّت', body: 'يتيح دعم PWA للموظفين إضافة التطبيق كاختصار على سطح المكتب بنافذة مستقلة نظيفة.' }
+            ],
+            footerLeft: 'النشر'
+          },
+          {
+            topbarLeft: 'خطة التسليم', topbarRight: 'مرحلية وعملية',
+            eyebrow: 'خارطة طريق MVP',
+            h2: 'تسليم قيمة مبكرة ثم إضافة التحسينات والتحكم المتقدم.',
+            phases: [
+              { tag: 'المرحلة 1', title: 'البنية التحتية', body: 'إعداد المشروع والخادم وقاعدة البيانات وأساس المثبّت وتسجيل الدخول وـJWT وبيانات 15 غرفة.' },
+              { tag: 'المرحلة 2', title: 'مسار الحجز', body: 'بيانات النزيل ورفع الهوية وقواعد المرافقين وحساب السعر والدفع وطباعة الإيصال.' },
+              { tag: 'المرحلة 3', title: 'أدوات الإدارة', body: 'العضوية وتحديث الأسعار وحالة التدبير المنزلي وخريطة الغرف البصرية.' },
+              { tag: 'المرحلة 4', title: 'الأمان والصقل', body: 'تشفير الهويات وتثبيت PWA والتحليلات ومحرر الإيصالات والتحسينات التشغيلية النهائية.' }
+            ],
+            footerLeft: 'خارطة الطريق'
+          },
+          {
+            topbarLeft: 'خلاصة الحجة', topbarRight: 'لماذا الموافقة',
+            eyebrow: 'رسالة القرار',
+            quote: 'هذا النظام يحوّل العمليات اليومية للنادي إلى عملية مضبوطة وقابلة للقياس وآمنة.',
+            askTitle: 'الخطوة التالية الموصى بها',
+            askBody: 'الموافقة على بناء MVP وتأكيد نصوص الإيصالات وقواعد تسعير الغرف وإعداد ملفات Excel الحالية للأعضاء والحجوزات للاستيراد.',
+            cta: 'الموافقة على انطلاق MVP',
+            footerLeft: 'القرار'
+          }
+        ]
+      }
+    };
+
+    function applyTranslations(lang) {
+      const t = translations[lang];
+      const html = document.documentElement;
+      html.lang = lang;
+      html.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      document.getElementById('langBtn').textContent = t.langBtnLabel;
+      document.getElementById('printHelp').textContent = t.printHelp;
+
+      slides.forEach((slide, i) => {
+        const d = t.slides[i];
+        if (!d) return;
+
+        // topbar
+        const topbarBrand = slide.querySelector('.topbar .brand');
+        if (topbarBrand) {
+          const mark = topbarBrand.querySelector('.brand-mark');
+          topbarBrand.innerHTML = '';
+          if (mark) topbarBrand.appendChild(mark);
+          topbarBrand.appendChild(document.createTextNode(d.topbarLeft));
+        }
+        const topbarRight = slide.querySelector('.topbar > span');
+        if (topbarRight) topbarRight.textContent = d.topbarRight;
+
+        // footer
+        const footerLeft = slide.querySelector('.footer > span');
+        if (footerLeft) footerLeft.textContent = d.footerLeft;
+
+        // eyebrow
+        const eyebrow = slide.querySelector('.eyebrow');
+        if (eyebrow && d.eyebrow) eyebrow.textContent = d.eyebrow;
+
+        // headings
+        const h1 = slide.querySelector('h1');
+        if (h1 && d.h1) h1.innerHTML = d.h1;
+        const h2 = slide.querySelector('h2');
+        if (h2 && d.h2) h2.textContent = d.h2;
+
+        // lead
+        const lead = slide.querySelector('.lead');
+        if (lead && d.lead) lead.textContent = d.lead;
+
+        // quote
+        const quote = slide.querySelector('.quote');
+        if (quote && d.quote) quote.textContent = d.quote;
+
+        // ask
+        const askH3 = slide.querySelector('.ask h3');
+        if (askH3 && d.askTitle) askH3.textContent = d.askTitle;
+        const askP = slide.querySelector('.ask p');
+        if (askP && d.askBody) askP.textContent = d.askBody;
+        const cta = slide.querySelector('.cta');
+        if (cta && d.cta) cta.textContent = d.cta;
+
+        // points
+        if (d.points) {
+          const pointEls = slide.querySelectorAll('.point');
+          d.points.forEach((pt, pi) => {
+            const el = pointEls[pi];
+            if (!el) return;
+            const h3 = el.querySelector('h3');
+            const p = el.querySelector('p');
+            if (h3) h3.textContent = pt.title;
+            if (p) p.textContent = pt.body;
+          });
+        }
+
+        // cards
+        if (d.cards) {
+          const cardEls = slide.querySelectorAll('.card');
+          d.cards.forEach((card, ci) => {
+            const el = cardEls[ci];
+            if (!el) return;
+            const h3 = el.querySelector('h3');
+            const p = el.querySelector('p');
+            if (h3) h3.textContent = card.title;
+            if (p) p.textContent = card.body;
+          });
+        }
+
+        // lanes
+        if (d.lanes) {
+          const laneEls = slide.querySelectorAll('.lane');
+          d.lanes.forEach((lane, li) => {
+            const el = laneEls[li];
+            if (!el) return;
+            const h3 = el.querySelector('h3');
+            const p = el.querySelector('p');
+            if (h3) h3.textContent = lane.title;
+            if (p) p.textContent = lane.body;
+          });
+        }
+
+        // screenshot captions (hkCaption, resCaption, compCaption)
+        const captionH3s = slide.querySelectorAll('.screenshot-caption h3');
+        const captionPs = slide.querySelectorAll('.screenshot-caption p');
+        const caps = [d.hkCaption, d.resCaption, d.compCaption].filter(Boolean);
+        caps.forEach((cap, ci) => {
+          if (captionH3s[ci]) captionH3s[ci].textContent = cap.title;
+          if (captionPs[ci]) captionPs[ci].textContent = cap.body;
+        });
+
+        // phases
+        if (d.phases) {
+          const phaseEls = slide.querySelectorAll('.phase');
+          d.phases.forEach((ph, pi) => {
+            const el = phaseEls[pi];
+            if (!el) return;
+            const tag = el.querySelector('.tag');
+            const h3 = el.querySelector('h3');
+            const p = el.querySelector('p');
+            if (tag) tag.textContent = ph.tag;
+            if (h3) h3.textContent = ph.title;
+            if (p) p.textContent = ph.body;
+          });
+        }
+      });
+    }
+
+    document.getElementById('langBtn').addEventListener('click', () => {
+      currentLang = currentLang === 'en' ? 'ar' : 'en';
+      applyTranslations(currentLang);
+      document.title = currentLang === 'ar'
+        ? `\u0634\u0631\u064a\u062d\u0629 ${current + 1} \u0645\u0646 ${slides.length} - \u0646\u0627\u062f\u064a \u0645\u062d\u0627\u0645\u064a \u0623\u0633\u064a\u0648\u0637`
+        : `Slide ${current + 1} of ${slides.length} - Asyut Lawyers Club`;
+    });
+
+    // Init progress bar for slide 1
+    progressBars.forEach(b => b.style.setProperty('--progress', `${(100 / slides.length).toFixed(1)}%`));
+  </script>
+</body>
+</html>

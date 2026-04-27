@@ -1,0 +1,13 @@
+# Office files
+*.pptx
+*.docx
+*.xlsx
+
+# Temp / system
+Thumbs.db
+Desktop.ini
+.DS_Store
+BCO.*.png
+
+# Agent internals
+.agents/
