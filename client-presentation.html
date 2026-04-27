@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -1119,7 +1119,7 @@
     const slides = Array.from(document.querySelectorAll('.slide'));
     const progressBars = Array.from(document.querySelectorAll('.progress span'));
     let current = 0;
-    let currentLang = 'en'; // hoisted — overwritten by language switcher below
+    let currentLang = 'ar'; // hoisted — overwritten by language switcher below
 
     let animating = false;
 
@@ -1584,7 +1584,8 @@
         : `Slide ${current + 1} of ${slides.length} - Asyut Lawyers Club`;
     });
 
-    // Init progress bar for slide 1
+    // Init language and progress bar
+    applyTranslations('ar');
     progressBars.forEach(b => b.style.setProperty('--progress', `${(100 / slides.length).toFixed(1)}%`));
   </script>
 </body>
